@@ -2029,7 +2029,7 @@ int adapter_resets(int trst, int srst)
 		return ERROR_OK;
 	} else if (transport_is_swd() || transport_is_hla() ||
 			   transport_is_dapdirect_swd() || transport_is_dapdirect_jtag() ||
-			   transport_is_swim()) {
+			   transport_is_swim() || transport_is_fine()) {
 		if (trst == TRST_ASSERT) {
 			LOG_ERROR("transport %s has no trst signal",
 				get_current_transport()->name);

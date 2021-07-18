@@ -25,6 +25,7 @@ noinst_LTLIBRARIES += %D%/libtarget.la
 	%D%/dsp563xx_once.c \
 	%D%/dsp5680xx.c \
 	%D%/hla_target.c \
+	%D%/rx.c \
 	$(ARMV8_SRC) \
 	$(MIPS64_SRC)
 

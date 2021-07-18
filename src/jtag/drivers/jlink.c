@@ -799,6 +799,11 @@ static int jlink_init(void)
 		return ERROR_JTAG_INIT_FAILED;
 	}
 
+	if (iface == JAYLINK_TIF_FINE) {
+		jaylink_clear_reset(devh);
+		jaylink_set_reset(devh);
+	}
+
 	ret = select_interface();
 
 	if (ret != ERROR_OK) {
@@ -2269,7 +2274,41 @@ static const struct swd_driver jlink_swd = {
 	.run = &jlink_swd_run_queue,
 };
 
-static const char * const jlink_transports[] = { "jtag", "swd", NULL };
+static int jlink_fine_init(void)
+{
+	iface = JAYLINK_TIF_FINE;
+
+	return ERROR_OK;
+}
+
+static int jlink_fine_reset(void)
+{
+	LOG_DEBUG("TODO: control reset pin while in FINE mode\n");
+
+	return ERROR_OK;
+}
+
+static int jlink_fine_xfer(uint8_t *out, uint8_t *in, uint8_t out_cnt,
+			   uint8_t in_cnt, int timeout)
+{
+	int ret;
+
+	ret = jaylink_fine_io(devh, out, in, out_cnt, in_cnt, timeout);
+	if (ret != JAYLINK_OK) {
+		LOG_DEBUG("jaylink_fine_io() failed: %s.\n", jaylink_strerror(ret));
+		return ERROR_FAIL;
+	}
+
+	return ERROR_OK;
+}
+
+static const struct fine_driver jlink_fine = {
+	.init = &jlink_fine_init,
+	.srst = &jlink_fine_reset,
+	.xfer = &jlink_fine_xfer,
+};
+
+static const char * const jlink_transports[] = { "jtag", "swd", "fine", NULL };
 
 static struct jtag_interface jlink_interface = {
 	.execute_queue = &jlink_execute_queue,
@@ -2291,4 +2330,5 @@ struct adapter_driver jlink_adapter_driver = {
 
 	.jtag_ops = &jlink_interface,
 	.swd_ops = &jlink_swd,
+	.fine_ops = &jlink_fine,
 };

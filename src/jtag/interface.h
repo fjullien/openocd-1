@@ -27,6 +27,7 @@
 
 #include <jtag/jtag.h>
 #include <jtag/swim.h>
+#include <jtag/fine.h>
 #include <target/arm_tpiu_swo.h>
 
 /* @file
@@ -354,6 +355,9 @@ struct adapter_driver {
 
 	/** Low-level SWD APIs */
 	const struct swd_driver *swd_ops;
+
+	/** Low-level FINE APIs */
+	const struct fine_driver *fine_ops;
 
 	/* DAP APIs over JTAG transport */
 	const struct dap_ops *dap_jtag_ops;

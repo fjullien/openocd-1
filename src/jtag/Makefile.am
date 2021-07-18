@@ -23,8 +23,10 @@ include %D%/drivers/Makefile.am
 	%D%/interfaces.c \
 	%D%/tcl.c \
 	%D%/swim.c \
+	%D%/fine.c \
 	%D%/commands.h \
 	%D%/driver.h \
+	%D%/fine.h \
 	%D%/interface.h \
 	%D%/interfaces.h \
 	%D%/minidriver.h \
